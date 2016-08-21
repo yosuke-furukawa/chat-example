@@ -1,0 +1,46 @@
+<style>
+body {
+  font-family: sans-serif;
+  font-size: 13px;
+}
+form { 
+  background: #eee; 
+  padding: 3px; 
+  position: fixed; 
+  bottom: 0; 
+  width: 100%; 
+}
+form input { 
+  padding: 10px;
+  width: 90%;
+}
+form button { 
+  padding: 10px;
+  width: 9%;
+}
+</style>
+<h1>ソフトウェアデザイン Chat example</h1>
+<ul id="messages"></ul>
+<form id='form'>
+  <input id="chat" /><button>Chat</button>
+</form>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var socket = io();
+var form = document.getElementById('form');
+var chat = document.getElementById('chat');
+var messages = document.getElementById('messages');
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var message = chat.value;
+  socket.emit('chat', message);
+  chat.value = '';
+});
+
+socket.on('chat', function (msg) {
+  var li = document.createElement('li');
+  li.textContent = msg;
+  messages.appendChild(li);
+});
+</script>
